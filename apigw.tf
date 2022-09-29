@@ -228,6 +228,16 @@ resource "aws_apigatewayv2_deployment" "apigw_3" {
 ## Workaround to update the routes and do the deployment.##
 resource "null_resource" "update_1" {
   provisioner "local-exec" {
+    command = "aws apigatewayv2 update-route --api-id ${aws_apigatewayv2_api.apigw.id} --route-id ${aws_apigatewayv2_route.apigw_1.id} --target integrations/${aws_apigatewayv2_integration.apigw_1.id}"
+  }
+  provisioner "local-exec" {
+    command = "aws apigatewayv2 create-deployment --api-id ${aws_apigatewayv2_api.apigw.id} --stage-name api1"
+  }
+}
+
+## Workaround to update the routes and do the deployment.##
+resource "null_resource" "update_2" {
+  provisioner "local-exec" {
     command = "aws apigatewayv2 update-route --api-id ${aws_apigatewayv2_api.apigw.id} --route-id ${aws_apigatewayv2_route.apigw_1.id} --target integrations/${aws_apigatewayv2_integration.apigw_2.id}"
   }
   provisioner "local-exec" {
@@ -236,7 +246,7 @@ resource "null_resource" "update_1" {
 }
 
 ## Workaround to update the routes and do the deployment.##
-resource "null_resource" "update_2" {
+resource "null_resource" "update_3" {
   provisioner "local-exec" {
     command = "aws apigatewayv2 update-route --api-id ${aws_apigatewayv2_api.apigw.id} --route-id ${aws_apigatewayv2_route.apigw_1.id} --target integrations/${aws_apigatewayv2_integration.apigw_3.id}"
   }
@@ -244,3 +254,4 @@ resource "null_resource" "update_2" {
     command = "aws apigatewayv2 create-deployment --api-id ${aws_apigatewayv2_api.apigw.id} --stage-name api3"
   }
 }
+
